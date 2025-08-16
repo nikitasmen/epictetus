@@ -26,6 +26,29 @@
           <span v-if="item.icon" class="nav-icon">{{ item.icon }}</span>
           <span class="nav-text">{{ item.name }}</span>
         </router-link>
+
+        <!-- Admin Badge -->
+        <span v-if="authStore.isAdmin" class="admin-badge">
+          👨‍💼 Admin
+        </span>
+
+        <!-- User Menu -->
+        <div v-if="authStore.isAuthenticated" class="user-menu">
+          <button class="user-button" @click="toggleUserMenu">
+            <span class="user-avatar">{{ userInitials }}</span>
+            <span class="user-name">{{ authStore.userName }}</span>
+            <span class="dropdown-arrow">▼</span>
+          </button>
+          
+          <div v-if="isUserMenuOpen" class="user-dropdown">
+            <router-link v-if="authStore.isAdmin" to="/admin" class="dropdown-item" @click="closeUserMenu">
+              ⚙️ Admin Panel
+            </router-link>
+            <button class="dropdown-item logout-btn" @click="handleLogout">
+              🚪 Logout
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Mobile Menu Toggle -->
@@ -43,6 +66,15 @@
 
     <!-- Mobile Navigation Menu -->
     <div class="mobile-nav" :class="{ 'mobile-nav--open': isMobileMenuOpen }">
+      <!-- User Info in Mobile Menu -->
+      <div v-if="authStore.isAuthenticated" class="mobile-user-info">
+        <div class="mobile-user-avatar">{{ userInitials }}</div>
+        <div class="mobile-user-details">
+          <span class="mobile-user-name">{{ authStore.userName }}</span>
+          <span v-if="authStore.isAdmin" class="mobile-admin-badge">Admin</span>
+        </div>
+      </div>
+
       <router-link
         v-for="item in navigationItems"
         :key="item.path"
@@ -54,6 +86,27 @@
         <span v-if="item.icon" class="nav-icon">{{ item.icon }}</span>
         <span class="nav-text">{{ item.name }}</span>
       </router-link>
+
+      <!-- Admin Link in Mobile -->
+      <router-link 
+        v-if="authStore.isAdmin" 
+        to="/admin" 
+        class="mobile-nav-link admin-link"
+        @click="closeMobileMenu"
+      >
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-text">Admin Panel</span>
+      </router-link>
+
+      <!-- Logout Button in Mobile -->
+      <button 
+        v-if="authStore.isAuthenticated" 
+        class="mobile-nav-link logout-btn"
+        @click="handleLogout"
+      >
+        <span class="nav-icon">🚪</span>
+        <span class="nav-text">Logout</span>
+      </button>
     </div>
 
     <!-- Mobile Menu Overlay -->
@@ -67,7 +120,13 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.js'
+
+// Stores
+const authStore = useAuthStore()
+const route = useRoute()
+const router = useRouter()
 
 // Props
 const props = defineProps({
@@ -100,8 +159,8 @@ const props = defineProps({
 
 // Reactive state
 const isMobileMenuOpen = ref(false)
+const isUserMenuOpen = ref(false)
 const isScrolled = ref(false)
-const route = useRoute()
 
 // Computed properties
 const navbarClasses = computed(() => [
@@ -141,6 +200,27 @@ const isActiveRoute = (path) => {
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 10
+}
+
+// User menu methods
+const userInitials = computed(() => {
+  if (!authStore.userName) return 'U'
+  return authStore.userName.split(' ').map(name => name[0]).join('').toUpperCase()
+})
+
+const toggleUserMenu = () => {
+  isUserMenuOpen.value = !isUserMenuOpen.value
+}
+
+const closeUserMenu = () => {
+  isUserMenuOpen.value = false
+}
+
+const handleLogout = async () => {
+  closeUserMenu()
+  closeMobileMenu()
+  authStore.logout()
+  await router.push('/')
 }
 
 // Lifecycle hooks
@@ -411,6 +491,166 @@ watch(() => route.path, () => {
   .brand-logo {
     height: 24px;
   }
+}
+
+/* User Menu Styles */
+.admin-badge {
+  background-color: var(--success-color, #4CAF50);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 1rem;
+}
+
+.user-menu {
+  position: relative;
+  margin-left: 1rem;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: background-color 0.3s ease;
+}
+
+.user-button:hover {
+  background-color: var(--background-secondary, #f9fafb);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  background-color: var(--primary-color, #3b82f6);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--text-primary, #1f2937);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-arrow {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #6b7280);
+  transition: transform 0.3s ease;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--background-primary, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  min-width: 160px;
+  z-index: 1000;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: var(--text-primary, #1f2937);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.875rem;
+}
+
+.dropdown-item:hover {
+  background-color: var(--background-secondary, #f9fafb);
+}
+
+.logout-btn {
+  color: var(--error-color, #ef4444);
+  border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+/* Mobile User Info */
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  margin-bottom: 0.5rem;
+}
+
+.mobile-user-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-color, #3b82f6);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.mobile-user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobile-user-name {
+  font-weight: 600;
+  color: var(--text-primary, #1f2937);
+}
+
+.mobile-admin-badge {
+  background-color: var(--success-color, #4CAF50);
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.admin-link {
+  background-color: var(--success-color, #4CAF50) !important;
+  color: white !important;
+}
+
+.admin-link:hover {
+  background-color: var(--success-dark, #388e3c) !important;
+}
+
+.mobile-nav-link.logout-btn {
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border-color, #e5e7eb);
+  margin-top: 0.5rem;
+  color: var(--error-color, #ef4444);
 }
 
 /* Dark mode support */

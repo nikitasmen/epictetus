@@ -1,0 +1,131 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "New Electronic Engineering Laboratory Opens",
+      "description": "Our department has just inaugurated a state-of-the-art electronics laboratory equipped with the latest instruments and tools for advanced research and education.",
+      "content": "We are excited to announce the opening of our new Electronic Engineering Laboratory, a cutting-edge facility that will enhance our research capabilities and provide students with hands-on experience using industry-standard equipment.\n\nThe laboratory features:\n- Advanced oscilloscopes and signal generators\n- Programmable logic analyzers\n- High-frequency network analyzers\n- PCB prototyping stations\n- Microcontroller development boards\n\nThis investment demonstrates our commitment to providing the best educational experience for our students and advancing research in electronic engineering.",
+      "author": "Prof. Dr. Andreas Komninos",
+      "publishedDate": "2025-01-15",
+      "category": "updates",
+      "featured": true,
+      "imageUrl": "/logo.jpg",
+      "tags": ["laboratory", "equipment", "education", "research"],
+      "readTime": "3 min read",
+      "likes": 42,
+      "views": 1250
+    },
+    {
+      "id": 2,
+      "title": "Student Team Wins National Robotics Competition",
+      "description": "Our undergraduate team secured first place in the National Robotics Challenge with their innovative autonomous navigation system.",
+      "content": "We are proud to announce that our student team \"Circuit Breakers\" has won first place in the National Robotics Competition 2025. The team, consisting of final-year Electronic Engineering students, developed an innovative autonomous navigation system that impressed judges with its accuracy and efficiency.\n\nTeam members:\n- Maria Papadopoulos (Team Leader)\n- Dimitris Kostas\n- Elena Georgiou\n- Nikos Alexandrou\n\nTheir project focused on creating a robot capable of navigating complex environments while avoiding obstacles and optimizing its path in real-time. This achievement showcases the exceptional talent and dedication of our students.",
+      "author": "Student Affairs Office",
+      "publishedDate": "2025-01-10",
+      "category": "achievements",
+      "featured": false,
+      "imageUrl": "/logo.jpg",
+      "tags": ["robotics", "competition", "students", "achievement"],
+      "readTime": "4 min read",
+      "likes": 89,
+      "views": 2100
+    },
+    {
+      "id": 3,
+      "title": "Research Grant Awarded for IoT Security Project",
+      "description": "Our faculty received a significant research grant to develop advanced security protocols for Internet of Things devices.",
+      "content": "The Electronic Engineering Department has been awarded a substantial research grant from the European Research Council to develop next-generation security protocols for IoT devices.\n\nThe project, titled \"SecureIoT: Advanced Cryptographic Protocols for Distributed Networks,\" will be led by Prof. Dr. Maria Stavrou and her research team. The grant will fund:\n\n- Development of lightweight encryption algorithms\n- Security analysis of existing IoT protocols\n- Implementation of hardware security modules\n- Collaboration with industry partners\n\nThis project positions our department at the forefront of IoT security research and will contribute to making connected devices more secure for everyone.",
+      "author": "Research Office",
+      "publishedDate": "2025-01-05",
+      "category": "research",
+      "featured": true,
+      "imageUrl": "/logo.jpg",
+      "tags": ["IoT", "security", "research", "grant"],
+      "readTime": "5 min read",
+      "likes": 67,
+      "views": 1800
+    },
+    {
+      "id": 4,
+      "title": "Guest Lecture: Future of Artificial Intelligence in Engineering",
+      "description": "Join us for an inspiring guest lecture by Dr. Sophia Chen on the transformative role of AI in modern engineering practices.",
+      "content": "We are delighted to announce a special guest lecture by Dr. Sophia Chen, a renowned AI researcher from MIT, who will discuss \"The Future of Artificial Intelligence in Engineering\" on February 20th, 2025.\n\nDr. Chen will cover:\n- Machine learning applications in circuit design\n- AI-driven optimization in embedded systems\n- Ethical considerations in AI engineering\n- Career opportunities in AI engineering\n\nThis event is open to all students and faculty members. The lecture will be held in the main auditorium at 2:00 PM, with a Q&A session following the presentation.\n\nRefreshments will be provided after the event, offering an excellent networking opportunity with our distinguished guest and fellow attendees.",
+      "author": "Events Committee",
+      "publishedDate": "2025-02-01",
+      "category": "events",
+      "featured": false,
+      "imageUrl": "/logo.jpg",
+      "tags": ["AI", "lecture", "guest speaker", "machine learning"],
+      "readTime": "2 min read",
+      "likes": 34,
+      "views": 890
+    },
+    {
+      "id": 5,
+      "title": "Summer Internship Opportunities Available",
+      "description": "Exciting internship positions are now open at leading tech companies for Electronic Engineering students.",
+      "content": "We are pleased to announce that several prestigious technology companies have partnered with our department to offer summer internship opportunities for Electronic Engineering students.\n\nParticipating companies include:\n- TechCorp Industries (Hardware Design)\n- Innovation Labs (R&D Projects)\n- CircuitWorks (PCB Design and Testing)\n- FutureElectronics (Embedded Systems)\n- SmartDevices Inc. (IoT Development)\n\nInternship benefits:\n- Hands-on experience with cutting-edge technology\n- Mentorship from industry professionals\n- Potential for full-time job offers\n- Competitive compensation packages\n- Professional development opportunities\n\nApplication deadline: March 15th, 2025. Interested students should submit their applications through the department's career portal.",
+      "author": "Career Services",
+      "publishedDate": "2025-02-10",
+      "category": "opportunities",
+      "featured": true,
+      "imageUrl": "/logo.jpg",
+      "tags": ["internship", "career", "industry", "students"],
+      "readTime": "3 min read",
+      "likes": 156,
+      "views": 3200
+    },
+    {
+      "id": 6,
+      "title": "Department Celebrates 25 Years of Excellence",
+      "description": "The Electronic Engineering Department marks its 25th anniversary with a celebration of achievements and future aspirations.",
+      "content": "This year marks a significant milestone for our Electronic Engineering Department as we celebrate 25 years of academic excellence, groundbreaking research, and outstanding student achievements.\n\nOver the past quarter-century, our department has:\n- Graduated over 2,000 skilled engineers\n- Published more than 500 research papers\n- Secured funding for 50+ major research projects\n- Established partnerships with 30+ industry leaders\n- Developed innovative curricula adapted to industry needs\n\nTo commemorate this achievement, we will be hosting a special anniversary event on March 1st, 2025, featuring:\n- Alumni reunion and networking session\n- Exhibition of student projects and research\n- Panel discussions with industry experts\n- Awards ceremony recognizing outstanding contributions\n\nWe invite all students, faculty, alumni, and industry partners to join us in celebrating this remarkable journey and looking forward to the next 25 years of innovation and excellence.",
+      "author": "Department Head",
+      "publishedDate": "2025-02-15",
+      "category": "announcements",
+      "featured": true,
+      "imageUrl": "/logo.jpg",
+      "tags": ["anniversary", "celebration", "milestone", "alumni"],
+      "readTime": "4 min read",
+      "likes": 203,
+      "views": 4500
+    }
+  ],
+  "categories": [
+    {
+      "value": "all",
+      "label": "All News",
+      "description": "All news articles and updates"
+    },
+    {
+      "value": "updates",
+      "label": "Updates",
+      "description": "Department and facility updates"
+    },
+    {
+      "value": "achievements",
+      "label": "Achievements",
+      "description": "Student and faculty achievements"
+    },
+    {
+      "value": "research",
+      "label": "Research",
+      "description": "Research projects and grants"
+    },
+    {
+      "value": "events",
+      "label": "Events",
+      "description": "Upcoming events and lectures"
+    },
+    {
+      "value": "opportunities",
+      "label": "Opportunities",
+      "description": "Internships and career opportunities"
+    },
+    {
+      "value": "announcements",
+      "label": "Announcements",
+      "description": "General announcements and news"
+    }
+  ]
+}

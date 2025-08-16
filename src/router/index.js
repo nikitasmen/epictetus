@@ -51,6 +51,16 @@ const routes = [
     }
   },
   {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../views/AdminView.vue'),
+    meta: {
+      title: 'Admin Panel - Epictetus EE Team',
+      requiresAuth: true,
+      requiresAdmin: true
+    }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('../views/NotFoundView.vue'),
@@ -87,6 +97,27 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
   
+  // Check authentication for protected routes
+  if (to.meta.requiresAuth) {
+    // Import auth store dynamically to avoid circular dependency
+    import('../stores/auth.js').then(({ useAuthStore }) => {
+      const authStore = useAuthStore()
+      
+      if (!authStore.isAuthenticated) {
+        next({ name: 'Login', query: { redirect: to.fullPath } })
+        return
+      }
+      
+      if (to.meta.requiresAdmin && !authStore.isAdmin) {
+        next({ name: 'Home' })
+        return
+      }
+      
+      next()
+    })
+  } else {
+    next()
+  }
   // Add loading state or authentication checks here if needed
   next()
 })

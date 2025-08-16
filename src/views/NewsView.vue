@@ -66,12 +66,16 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useNewsStore } from '@/stores/news.js'
 import PageHeader from '@/components/common/PageHeader.vue'
 import FilterSection from '@/components/common/FilterSection.vue'
 import NewsCard from '@/components/news/NewsCard.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs.js'
+
+// Stores
+const newsStore = useNewsStore()
 
 // Reactive data
 const searchQuery = ref('')
@@ -84,102 +88,25 @@ const loadingMore = ref(false)
 // Navigation breadcrumbs
 const { breadcrumbs } = useBreadcrumbs('News')
 
-// Filter categories for FilterSection component
-const filterCategories = ref([
-  { value: 'all', label: 'All News', count: 6 },
-  { value: 'updates', label: 'Updates', count: 2 },
-  { value: 'philosophy', label: 'Philosophy', count: 2 },
-  { value: 'technology', label: 'Technology', count: 1 },
-  { value: 'community', label: 'Community', count: 1 }
-])
+// Get data from store
+const filterCategories = computed(() => newsStore.categories)
+const articles = computed(() => newsStore.articles)
 
 // Sort options for FilterSection component
 const sortOptions = ref([
   { value: 'date', label: 'Latest First' },
   { value: 'title', label: 'Title A-Z' },
   { value: 'author', label: 'Author A-Z' },
-  { value: 'views', label: 'Most Viewed' }
-])
-
-// Sample news articles
-const articles = ref([
-  {
-    id: 1,
-    title: 'New Features Released: Enhanced User Experience',
-    excerpt: 'We are excited to announce several new features that will improve your experience with our platform.',
-    author: 'Development Team',
-    category: 'updates',
-    date: '2025-08-10',
-    image: '/hmu.png',
-    tags: ['features', 'ui', 'accessibility'],
-    readingTime: '3 min',
-    views: 1250,
-    comments: 24,
-    shares: 15,
-    isLiked: false,
-    isSaved: false,
-    isBreaking: false,
-    isTrending: true,
-    topics: ['Product Updates', 'User Experience']
-  },
-  {
-    id: 2,
-    title: 'Stoic Philosophy in Modern Software Development',
-    excerpt: 'How ancient Stoic principles can guide modern developers in creating better software.',
-    author: 'Marcus Aurelius Jr.',
-    category: 'philosophy',
-    date: '2025-08-08',
-    image: '/logo.jpg',
-    tags: ['philosophy', 'development', 'productivity'],
-    readingTime: '8 min',
-    views: 892,
-    comments: 18,
-    shares: 32,
-    isLiked: true,
-    isSaved: true,
-    isBreaking: false,
-    isTrending: false,
-    topics: ['Philosophy', 'Programming', 'Mindfulness']
-  },
-  {
-    id: 3,
-    title: 'Breaking: Major Platform Update Coming Soon',
-    excerpt: 'A major platform update is scheduled for next week, bringing significant improvements.',
-    author: 'Product Team',
-    category: 'updates',
-    date: '2025-08-05',
-    image: '/logo.jpg',
-    tags: ['breaking', 'update', 'platform'],
-    readingTime: '4 min',
-    views: 2100,
-    comments: 45,
-    shares: 67,
-    isLiked: false,
-    isSaved: true,
-    isBreaking: true,
-    isTrending: true,
-    topics: ['Product Updates', 'Performance']
-  }
+  { value: 'views', label: 'Most Viewed' },
+  { value: 'likes', label: 'Most Liked' }
 ])
 
 // Computed properties
 const filteredArticles = computed(() => {
-  let filtered = articles.value
-
-  if (selectedCategory.value !== 'all') {
-    filtered = filtered.filter(article => article.category === selectedCategory.value)
-  }
-
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(article =>
-      article.title.toLowerCase().includes(query) ||
-      article.excerpt.toLowerCase().includes(query) ||
-      article.author.toLowerCase().includes(query)
-    )
+    return newsStore.searchArticles(searchQuery.value, selectedCategory.value)
   }
-
-  return filtered
+  return newsStore.articlesByCategory(selectedCategory.value)
 })
 
 // Methods
@@ -187,21 +114,21 @@ const transformArticleData = (article) => {
   return {
     id: article.id,
     title: article.title,
-    excerpt: article.excerpt,
+    description: article.description,
+    content: article.content,
     author: article.author,
     category: article.category,
-    publishedDate: article.date,
-    imageUrl: article.image,
+    publishedDate: article.publishedDate,
+    imageUrl: article.imageUrl,
     tags: article.tags,
-    readingTime: article.readingTime,
+    readTime: article.readTime,
     views: article.views,
-    comments: article.comments,
-    shares: article.shares,
-    likes: Math.floor(Math.random() * 100),
-    isBreaking: article.isBreaking,
-    isTrending: article.isTrending,
-    topics: article.topics,
-    contentTypes: article.isBreaking ? ['breaking'] : []
+    likes: article.likes,
+    featured: article.featured,
+    isBreaking: false,
+    isTrending: article.featured,
+    topics: article.tags.slice(0, 2),
+    contentTypes: article.featured ? ['featured'] : []
   }
 }
 
@@ -222,31 +149,38 @@ const handleViewChange = (view) => {
 }
 
 const handleArticleRead = (article) => {
-  // Handle article reading logic
+  // Increment views in store
+  newsStore.incrementViews(article.id)
 }
 
 const handleArticleSave = (article) => {
-  // Handle article save logic
+  // Handle article save logic - could be stored in user preferences
+  console.log('Article saved:', article.title)
 }
 
 const handleArticleUnsave = (article) => {
   // Handle article unsave logic
+  console.log('Article unsaved:', article.title)
 }
 
 const handleArticleLike = (article) => {
   // Handle article like logic
+  newsStore.likeArticle(article.id)
 }
 
 const handleArticleUnlike = (article) => {
-  // Handle article unlike logic
+  // Handle article unlike logic - would need to track user preferences
+  console.log('Article unliked:', article.title)
 }
 
 const handleArticleShare = (shareData) => {
   // Handle article sharing logic
+  console.log('Article shared:', shareData)
 }
 
 const handleViewSource = (article) => {
   // Handle view source logic
+  console.log('View source for:', article.title)
 }
 
 const handleTopicClick = (topic) => {
